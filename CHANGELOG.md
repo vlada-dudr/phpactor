@@ -5,6 +5,7 @@ Changelog
 
 BC Breaks:
 
+  - [PHP] Minimum PHP version bumped to 7.1
   - [RPC Plugins] a new `update_file_source` method is now returned by most
     code-transforming RPC handlers (e.g. import class, complete constructors).
     this is used in place of `replace_file_source`.
