@@ -105,10 +105,11 @@ class VirtualReflectionClassLikeDecorator implements ReflectionClassLike
 
     public function bindArguments(array $arguments): void
     {
+        $this->classLike->bindArguments($arguments);
     }
 
     public function arguments(): array
     {
-        return [];
+        return $this->classLike->arguments();
     }
 }

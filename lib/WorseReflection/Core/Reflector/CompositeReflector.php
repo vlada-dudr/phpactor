@@ -53,9 +53,9 @@ class CompositeReflector implements Reflector
         return $this->classReflector->reflectEnum($className);
     }
     
-    public function reflectClassLike($className, array $arguments = []): ReflectionClassLike
+    public function reflectClassLike($className): ReflectionClassLike
     {
-        return $this->classReflector->reflectClassLike($className, $arguments);
+        return $this->classReflector->reflectClassLike($className);
     }
     
     public function reflectClassesIn($sourceCode): ReflectionClassCollection

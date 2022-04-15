@@ -131,7 +131,7 @@ class CoreReflector implements ClassReflector, SourceCodeReflector, FunctionRefl
      *
      * @throws ClassNotFound
      */
-    public function reflectClassLike($className, array $arguments = []): ReflectionClassLike
+    public function reflectClassLike($className): ReflectionClassLike
     {
         $className = ClassName::fromUnknown($className);
 

@@ -86,7 +86,8 @@ class MemberAccessExpressionResolver implements Resolver
             }
 
             try {
-                $reflection = $resolver->reflector()->reflectClassLike($classType->name(), $arguments);
+                $reflection = $resolver->reflector()->reflectClassLike($classType->name());
+                $reflection->bindArguments($arguments);
             } catch (NotFound $e) {
                 continue;
             }
