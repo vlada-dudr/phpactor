@@ -40,8 +40,9 @@ interface ClassReflector
     /**
      * Reflect a class, trait, enum or interface by its name.
      * @param Name|string $className
+     * @param Type[] $arguments
      */
-    public function reflectClassLike($className): ReflectionClassLike;
+    public function reflectClassLike($className, array $arguments = []): ReflectionClassLike;
 
     /**
      * @param string|Name $className

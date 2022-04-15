@@ -17,6 +17,7 @@ use Phpactor\WorseReflection\Core\Reflection\ReflectionProperty;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\TypeFactory;
 use Phpactor\WorseReflection\Core\Type\ClassType;
+use Phpactor\WorseReflection\Core\Type\GenericClassType;
 use Phpactor\WorseReflection\Core\Type\StringLiteralType;
 use Phpactor\WorseReflection\Core\Util\NodeUtil;
 use Phpactor\WorseReflection\TypeUtil;
@@ -78,9 +79,14 @@ class MemberAccessExpressionResolver implements Resolver
             if (!$classType instanceof ClassType) {
                 continue;
             }
+            $arguments = [];
+
+            if ($classType instanceof GenericClassType) {
+                $arguments = $classType->arguments();
+            }
 
             try {
-                $reflection = $resolver->reflector()->reflectClassLike($classType->name());
+                $reflection = $resolver->reflector()->reflectClassLike($classType->name(), $arguments);
             } catch (NotFound $e) {
                 continue;
             }
