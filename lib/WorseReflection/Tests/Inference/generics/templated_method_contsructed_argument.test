@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @template TValue
+ */
+class Foobar {
+    /**
+     * @param TValue $foo
+     */
+    public function __construct(object $foo)
+    {
+    }
+
+    /**
+     * @return TValue
+     */
+    public function foo() {
+    }
+}
+
+$foo = new Foobar(new Bar());
+wrAssertType('Bar', $foo->foo());
