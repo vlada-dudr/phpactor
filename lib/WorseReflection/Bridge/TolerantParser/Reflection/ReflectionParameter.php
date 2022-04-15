@@ -3,7 +3,6 @@
 namespace Phpactor\WorseReflection\Bridge\TolerantParser\Reflection;
 
 use Phpactor\WorseReflection\Core\Reflection\ReflectionFunctionLike;
-use Phpactor\WorseReflection\Core\Reflection\TypeResolver\GenericHelper;
 use Phpactor\WorseReflection\Core\ServiceLocator;
 use Microsoft\PhpParser\Node\Parameter;
 use Phpactor\WorseReflection\Core\Type;
@@ -109,16 +108,6 @@ class ReflectionParameter extends AbstractReflectedNode implements CoreReflectio
         return $this->parameter->dotDotDotToken !== null;
     }
 
-    protected function node(): Node
-    {
-        return $this->parameter;
-    }
-
-    protected function serviceLocator(): ServiceLocator
-    {
-        return $this->serviceLocator;
-    }
-
     public function isGeneric(): bool
     {
         $type = $this->inferredType();
@@ -128,5 +117,15 @@ class ReflectionParameter extends AbstractReflectedNode implements CoreReflectio
         }
 
         return $this->method()->templateMap()->has(TypeUtil::short($type));
+    }
+
+    protected function node(): Node
+    {
+        return $this->parameter;
+    }
+
+    protected function serviceLocator(): ServiceLocator
+    {
+        return $this->serviceLocator;
     }
 }

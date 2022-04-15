@@ -6,7 +6,6 @@ use Microsoft\PhpParser\Node\Expression\ArgumentExpression;
 use Microsoft\PhpParser\Node\DelimitedList\ArgumentExpressionList;
 use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\Inference\NodeContextResolver;
-use Phpactor\WorseReflection\Core\Reflection\Collection\T;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionParameter;
@@ -14,7 +13,6 @@ use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Type\ArrayType;
 use Phpactor\WorseReflection\Core\Type\ClassType;
 use Phpactor\WorseReflection\Core\Type\GenericClassType;
-use Phpactor\WorseReflection\Core\Util\NodeUtil;
 use Phpactor\WorseReflection\TypeUtil;
 
 class GenericHelper
@@ -66,8 +64,7 @@ class GenericHelper
         NodeContextResolver $resolver,
         Frame $frame,
         ?ArgumentExpressionList $argumentExpressionList
-    ): array
-    {
+    ): array {
         if (null === $argumentExpressionList) {
             return [];
         }
@@ -92,6 +89,7 @@ class GenericHelper
     }
 
     /**
+     * @param Type[] $arguments
      * @return Type[]
      */
     public static function argumentsForMethod(array $arguments, ReflectionMethod $constructor): array

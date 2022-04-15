@@ -8,6 +8,7 @@ use Phpactor\WorseReflection\Core\Name;
 use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\DocBlock\DocBlock;
 use Phpactor\WorseReflection\Core\SourceCode;
+use Phpactor\WorseReflection\Core\TemplateMap;
 use Phpactor\WorseReflection\Core\TypeFactory;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionParameterCollection;
@@ -81,6 +82,11 @@ class ReflectionFunction extends AbstractReflectedNode implements CoreReflection
     public function sourceCode(): SourceCode
     {
         return $this->sourceCode;
+    }
+
+    public function templateMap(): TemplateMap
+    {
+        return new TemplateMap([]);
     }
 
     protected function node(): Node

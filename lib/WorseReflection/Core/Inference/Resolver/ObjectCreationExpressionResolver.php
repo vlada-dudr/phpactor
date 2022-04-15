@@ -9,12 +9,9 @@ use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\Inference\NodeContext;
 use Phpactor\WorseReflection\Core\Inference\Resolver;
 use Phpactor\WorseReflection\Core\Inference\NodeContextResolver;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionParameter;
 use Phpactor\WorseReflection\Core\Reflection\TypeResolver\GenericHelper;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Type\GenericClassType;
-use Phpactor\WorseReflection\Core\Type\ReflectedClassType;
 
 class ObjectCreationExpressionResolver implements Resolver
 {
@@ -44,8 +41,7 @@ class ObjectCreationExpressionResolver implements Resolver
         NodeContextResolver $resolver,
         Frame $frame,
         ObjectCreationExpression $node
-    ): array
-    {
+    ): array {
         $reflection = $reflection = $type->reflectionOrNull();
         if (!$reflection) {
             return [];

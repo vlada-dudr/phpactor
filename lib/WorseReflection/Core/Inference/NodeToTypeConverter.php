@@ -54,7 +54,7 @@ class NodeToTypeConverter
             $reflection = $type->reflectionOrNull();
             if ($reflection) {
                 if ($reflection->templateMap()->count()) {
-                    $type = new GenericClassType($this->reflector,$type->name(), []);
+                    $type = new GenericClassType($this->reflector, $type->name(), []);
                 }
             }
         }
