@@ -18,6 +18,7 @@ use Phpactor\WorseReflection\Core\Type\ArrayType;
 use Phpactor\WorseReflection\Core\Type\CallableType;
 use Phpactor\WorseReflection\Core\Type\ClassType;
 use Phpactor\WorseReflection\Core\Type\GenericClassType;
+use Phpactor\WorseReflection\Core\Type\ReflectedClassType;
 use Phpactor\WorseReflection\Core\Type\ScalarType;
 use Phpactor\WorseReflection\Core\Type\SelfType;
 use Phpactor\WorseReflection\Core\Type\StaticType;
@@ -47,14 +48,23 @@ class NodeToTypeConverter
     {
         $type = $type ?: $node->getText();
 
-        /** @var Type $type */
         $type = $type instanceof Type ? $type : TypeFactory::fromStringWithReflector($type, $this->reflector);
+
+        if (!$type instanceof GenericClassType && $type instanceof ReflectedClassType) {
+            $reflection = $type->reflectionOrNull();
+            if ($reflection) {
+                if ($reflection->templateMap()->count()) {
+                    $type = new GenericClassType($this->reflector,$type->name(), []);
+                }
+            }
+        }
 
         if ($type instanceof GenericClassType) {
             foreach ($type->arguments() as $offset => $gType) {
                 $type->replaceArgument($offset, $this->resolve($node, $gType));
             }
         }
+
         if ($type instanceof ArrayType) {
             $arrayType = $this->resolve($node, $type->valueType);
             $type->valueType = $arrayType;

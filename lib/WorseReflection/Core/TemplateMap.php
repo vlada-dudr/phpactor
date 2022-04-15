@@ -69,4 +69,9 @@ final class TemplateMap
 
         return new TemplateMap($new);
     }
+
+    public function count(): int
+    {
+        return count($this->map);
+    }
 }

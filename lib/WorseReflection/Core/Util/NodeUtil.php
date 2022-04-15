@@ -5,7 +5,9 @@ namespace Phpactor\WorseReflection\Core\Util;
 use Microsoft\PhpParser\ClassLike;
 use Microsoft\PhpParser\NamespacedNameInterface;
 use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\DelimitedList\ArgumentExpressionList;
 use Microsoft\PhpParser\Node\DelimitedList\QualifiedNameList;
+use Microsoft\PhpParser\Node\Expression\ArgumentExpression;
 use Microsoft\PhpParser\Node\Expression\MemberAccessExpression;
 use Microsoft\PhpParser\Node\Expression\ObjectCreationExpression;
 use Microsoft\PhpParser\Node\Expression\UnaryExpression;
@@ -17,6 +19,9 @@ use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Microsoft\PhpParser\Token;
 use Microsoft\PhpParser\TokenKind;
 use Phpactor\WorseReflection\Core\Exception\CouldNotResolveNode;
+use Phpactor\WorseReflection\Core\Inference\Frame;
+use Phpactor\WorseReflection\Core\Inference\NodeContext;
+use Phpactor\WorseReflection\Core\Inference\NodeContextResolver;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\TypeFactory;
 use Phpactor\WorseReflection\Core\Type\MissingType;
@@ -197,5 +202,24 @@ class NodeUtil
         }
 
         return false;
+    }
+
+    public static function arguments(NodeContextResolver $resolver, Frame $frame, ?ArgumentExpressionList $argumentExpressionList): array
+    {
+        if (null === $argumentExpressionList) {
+            return [];
+        }
+
+        $arguments = [];
+        foreach ($argumentExpressionList->getElements() as $argument) {
+            if (!$argument instanceof ArgumentExpression) {
+                continue;
+            }
+
+            $arguments[] = $resolver->resolveNode($frame, $argument)->type();
+        }
+
+
+        return $arguments;
     }
 }

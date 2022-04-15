@@ -13,7 +13,7 @@ class GenericClassType extends ReflectedClassType implements IterableType
     /**
      * @var Type[]
      */
-    public array $arguments;
+    private array $arguments;
 
     /**
      * @param Type[] $arguments
@@ -31,14 +31,6 @@ class GenericClassType extends ReflectedClassType implements IterableType
             $this->name->__toString(),
             implode(',', array_map(fn (Type $t) => $t->__toString(), $this->arguments))
         );
-    }
-
-    /**
-     * @return Type[]
-     */
-    public function arguments(): array
-    {
-        return $this->arguments;
     }
 
     public function iterableValueType(): Type
@@ -68,5 +60,22 @@ class GenericClassType extends ReflectedClassType implements IterableType
 
         $this->arguments[$offset] = $type;
         return $this;
+    }
+
+    /**
+     * @param Type[] $arguments
+     */
+    public function setArguments(array $arguments): self
+    {
+        $this->arguments = $arguments;
+        return $this;
+    }
+
+    /**
+     * @return Type[]
+     */
+    public function arguments(): array
+    {
+        return $this->arguments;
     }
 }
