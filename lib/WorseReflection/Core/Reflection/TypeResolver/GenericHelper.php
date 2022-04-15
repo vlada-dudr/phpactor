@@ -6,6 +6,8 @@ use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Type\ClassType;
 use Phpactor\WorseReflection\Core\Type\GenericClassType;
+use Phpactor\WorseReflection\Core\Util\NodeUtil;
+use Phpactor\WorseReflection\TypeUtil;
 
 class GenericHelper
 {
@@ -15,12 +17,13 @@ class GenericHelper
             return $type;
         }
 
-        if ($type->name()->count() !== 1) {
-            return $type;
-        }
+        $parameterName = TypeUtil::short($type);
 
-        if ($class->templateMap()->has($type->__toString())) {
-            return $class->templateMap()->get($type->__toString(), $class->arguments());
+        if ($class->templateMap()->has($parameterName)) {
+            $methodType = $class->templateMap()->get($parameterName, $class->arguments());
+            if (TypeUtil::isDefined($methodType)) {
+                return $methodType;
+            }
         }
 
         $extendsType = $class->docblock()->extends();
