@@ -19,6 +19,10 @@ class GenericHelper
             return $type;
         }
 
+        if ($class->templateMap()->has($type->__toString())) {
+            return $class->templateMap()->get($type->__toString(), $class->arguments());
+        }
+
         $extendsType = $class->docblock()->extends();
         $extendsType = $class->scope()->resolveFullyQualifiedName($extendsType);
 

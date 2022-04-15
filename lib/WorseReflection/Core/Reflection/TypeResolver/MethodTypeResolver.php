@@ -23,11 +23,6 @@ class MethodTypeResolver
     {
         $resolvedType = $this->getDocblockTypesFromClassOrMethod($this->method);
 
-        $templateName = TypeUtil::short($resolvedType);
-        if ($this->method->class()->templateMap()->has($templateName)) {
-            $resolvedType = $this->method->class()->templateMap()->get($templateName, $this->method->class()->arguments());
-        }
-
         if (TypeUtil::isDefined($resolvedType)) {
             return $resolvedType;
         }
