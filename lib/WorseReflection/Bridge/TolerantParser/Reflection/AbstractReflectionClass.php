@@ -13,6 +13,11 @@ use Phpactor\WorseReflection\Core\Type\ReflectedClassType;
 
 abstract class AbstractReflectionClass extends AbstractReflectedNode implements ReflectionClassLike
 {
+    /**
+     * @var Type[]
+     */
+    private array $arguments;
+
     abstract public function name(): ClassName;
     abstract public function docblock(): DocBlock;
 
@@ -63,5 +68,18 @@ abstract class AbstractReflectionClass extends AbstractReflectedNode implements 
     public function type(): ReflectedClassType
     {
         return TypeFactory::reflectedClass($this->serviceLocator()->reflector(), $this->name());
+    }
+
+    public function bindArguments(array $arguments): void
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * @return Type[]
+     */
+    public function arguments(): array
+    {
+        return $this->arguments;
     }
 }

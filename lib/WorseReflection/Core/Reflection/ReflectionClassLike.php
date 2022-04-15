@@ -10,6 +10,7 @@ use Phpactor\WorseReflection\Core\DocBlock\DocBlock;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionMethodCollection;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionMemberCollection;
 use Phpactor\WorseReflection\Core\TemplateMap;
+use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Type\ReflectedClassType;
 
 interface ReflectionClassLike extends ReflectionNode
@@ -20,6 +21,9 @@ interface ReflectionClassLike extends ReflectionNode
 
     public function methods(ReflectionClassLike $contextClass = null): ReflectionMethodCollection;
 
+    /**
+     * @return ReflectionMemberCollection<ReflectionMember>
+     */
     public function members(): ReflectionMemberCollection;
 
     public function sourceCode(): SourceCode;
@@ -34,7 +38,7 @@ interface ReflectionClassLike extends ReflectionNode
 
     public function isEnum(): bool;
 
-    public function isConcrete();
+    public function isConcrete(): bool;
 
     public function docblock(): DocBlock;
 
@@ -43,4 +47,16 @@ interface ReflectionClassLike extends ReflectionNode
     public function templateMap(): TemplateMap;
 
     public function type(): ReflectedClassType;
+
+    /**
+     * Bind arguments to be applied to any templates
+     *
+     * @param Type[] $arguments
+     */
+    public function bindArguments(array $arguments): void;
+
+    /**
+     * @return Type[]
+     */
+    public function arguments(): array;
 }
