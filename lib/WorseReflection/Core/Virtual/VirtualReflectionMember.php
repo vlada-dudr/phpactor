@@ -9,6 +9,7 @@ use Phpactor\WorseReflection\Core\Position;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMember;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionScope;
+use Phpactor\WorseReflection\Core\TemplateMap;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Visibility;
 
@@ -160,5 +161,10 @@ abstract class VirtualReflectionMember implements ReflectionMember
     public function deprecation(): Deprecation
     {
         return $this->deprecation;
+    }
+
+    public function templateMap(): TemplateMap
+    {
+        return new TemplateMap([]);
     }
 }

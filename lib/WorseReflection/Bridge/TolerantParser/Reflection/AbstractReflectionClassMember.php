@@ -11,6 +11,7 @@ use Microsoft\PhpParser\ClassLike;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Microsoft\PhpParser\NamespacedNameInterface;
 use Microsoft\PhpParser\TokenKind;
+use Phpactor\WorseReflection\Core\TemplateMap;
 use Phpactor\WorseReflection\Core\Util\OriginalMethodResolver;
 use Phpactor\WorseReflection\Core\Visibility;
 use Phpactor\WorseReflection\Core\Inference\Frame;
@@ -75,6 +76,11 @@ abstract class AbstractReflectionClassMember extends AbstractReflectedNode
     public function deprecation(): Deprecation
     {
         return $this->docblock()->deprecation();
+    }
+
+    public function templateMap(): TemplateMap
+    {
+        return $this->declaringClass()->templateMap();
     }
 
     abstract protected function serviceLocator(): ServiceLocator;

@@ -9,7 +9,10 @@ use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\Inference\NodeContext;
 use Phpactor\WorseReflection\Core\Inference\Resolver;
 use Phpactor\WorseReflection\Core\Inference\NodeContextResolver;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionParameter;
 use Phpactor\WorseReflection\Core\Reflection\TypeResolver\GenericHelper;
+use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Type\GenericClassType;
 use Phpactor\WorseReflection\Core\Type\ReflectedClassType;
 
@@ -26,10 +29,32 @@ class ObjectCreationExpressionResolver implements Resolver
         $type = $context->type();
 
         if ($type instanceof GenericClassType) {
-            $arguments = GenericHelper::arguments($resolver, $frame, $node->argumentExpressionList);
+            $arguments = $this->resolveArguments($type, $resolver, $frame, $node);
             $context = $context->withType($type->setArguments($arguments));
         }
 
         return $context;
+    }
+
+    /**
+     * @return Type[]
+     */
+    private function resolveArguments(
+        GenericClassType $type,
+        NodeContextResolver $resolver,
+        Frame $frame,
+        ObjectCreationExpression $node
+    ): array
+    {
+        $reflection = $reflection = $type->reflectionOrNull();
+        if (!$reflection) {
+            return [];
+        }
+        foreach ($reflection->methods()->byName('__construct') as $constructor) {
+            $arguments = GenericHelper::arguments($resolver, $frame, $node->argumentExpressionList);
+            return GenericHelper::argumentsForMethod($arguments, $constructor);
+        }
+
+        return [];
     }
 }

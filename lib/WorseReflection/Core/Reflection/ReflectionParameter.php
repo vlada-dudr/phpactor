@@ -30,4 +30,6 @@ interface ReflectionParameter extends ReflectionNode
     public function isPromoted(): bool;
 
     public function isVariadic(): bool;
+
+    public function isGeneric(): bool;
 }

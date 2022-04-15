@@ -3,6 +3,7 @@
 namespace Phpactor\WorseReflection\Bridge\TolerantParser\Reflection;
 
 use Phpactor\WorseReflection\Core\Reflection\ReflectionFunctionLike;
+use Phpactor\WorseReflection\Core\Reflection\TypeResolver\GenericHelper;
 use Phpactor\WorseReflection\Core\ServiceLocator;
 use Microsoft\PhpParser\Node\Parameter;
 use Phpactor\WorseReflection\Core\Type;
@@ -116,5 +117,16 @@ class ReflectionParameter extends AbstractReflectedNode implements CoreReflectio
     protected function serviceLocator(): ServiceLocator
     {
         return $this->serviceLocator;
+    }
+
+    public function isGeneric(): bool
+    {
+        $type = $this->inferredType();
+
+        if ($type instanceof ArrayType) {
+            $type = $type->valueType;
+        }
+
+        return $this->method()->templateMap()->has(TypeUtil::short($type));
     }
 }

@@ -5,6 +5,7 @@ namespace Phpactor\WorseReflection\Core\Reflection;
 use Phpactor\WorseReflection\Core\Position;
 use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\DocBlock\DocBlock;
+use Phpactor\WorseReflection\Core\TemplateMap;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\NodeText;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionParameterCollection;
@@ -26,4 +27,6 @@ interface ReflectionFunctionLike
     public function inferredType(): Type;
 
     public function type(): Type;
+
+    public function templateMap(): TemplateMap;
 }

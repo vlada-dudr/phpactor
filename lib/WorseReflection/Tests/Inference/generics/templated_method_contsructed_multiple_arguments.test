@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @template TValue
+ * @template TCat
+ */
+class Foobar {
+    /**
+     * @param TValue $foo
+     * @param TCat[] $cats
+     */
+    public function __construct(object $foo, string $no, array $cats)
+    {
+    }
+
+    /**
+     * @return TValue
+     */
+    public function foo() {}
+
+    /**
+     * @return TCat
+     */
+    public function cat() {}
+}
+
+$foo = new Foobar(new Bar(), 'foo', [112,332]);
+wrAssertType('Bar', $foo->foo());
+wrAssertType('int', $foo->cat());

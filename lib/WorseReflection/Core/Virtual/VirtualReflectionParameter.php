@@ -101,4 +101,9 @@ class VirtualReflectionParameter implements ReflectionParameter
     {
         return false;
     }
+
+    public function isGeneric(): bool
+    {
+        return false;
+    }
 }
