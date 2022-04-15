@@ -9,9 +9,9 @@ use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\Inference\NodeContext;
 use Phpactor\WorseReflection\Core\Inference\Resolver;
 use Phpactor\WorseReflection\Core\Inference\NodeContextResolver;
+use Phpactor\WorseReflection\Core\Reflection\TypeResolver\GenericHelper;
 use Phpactor\WorseReflection\Core\Type\GenericClassType;
 use Phpactor\WorseReflection\Core\Type\ReflectedClassType;
-use Phpactor\WorseReflection\Core\Util\NodeUtil;
 
 class ObjectCreationExpressionResolver implements Resolver
 {
@@ -26,7 +26,7 @@ class ObjectCreationExpressionResolver implements Resolver
         $type = $context->type();
 
         if ($type instanceof GenericClassType) {
-            $arguments = NodeUtil::arguments($resolver, $frame, $node->argumentExpressionList);
+            $arguments = GenericHelper::arguments($resolver, $frame, $node->argumentExpressionList);
             $context = $context->withType($type->setArguments($arguments));
         }
 

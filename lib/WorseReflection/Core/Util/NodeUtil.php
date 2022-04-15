@@ -203,23 +203,4 @@ class NodeUtil
 
         return false;
     }
-
-    public static function arguments(NodeContextResolver $resolver, Frame $frame, ?ArgumentExpressionList $argumentExpressionList): array
-    {
-        if (null === $argumentExpressionList) {
-            return [];
-        }
-
-        $arguments = [];
-        foreach ($argumentExpressionList->getElements() as $argument) {
-            if (!$argument instanceof ArgumentExpression) {
-                continue;
-            }
-
-            $arguments[] = $resolver->resolveNode($frame, $argument)->type();
-        }
-
-
-        return $arguments;
-    }
 }

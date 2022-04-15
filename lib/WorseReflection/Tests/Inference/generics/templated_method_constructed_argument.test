@@ -15,7 +15,7 @@ class Foobar {
      * @return TValue
      */
     public function foo() {
-   } 
+    }
 }
 
 $foo = new Foobar(new Bar());

@@ -2,8 +2,13 @@
 
 namespace Phpactor\WorseReflection\Core\Reflection\TypeResolver;
 
+use Microsoft\PhpParser\Node\Expression\ArgumentExpression;
+use Microsoft\PhpParser\Node\DelimitedList\ArgumentExpressionList;
+use Phpactor\WorseReflection\Core\Inference\Frame;
+use Phpactor\WorseReflection\Core\Inference\NodeContextResolver;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\Type;
+use Phpactor\WorseReflection\Core\Type\ArrayType;
 use Phpactor\WorseReflection\Core\Type\ClassType;
 use Phpactor\WorseReflection\Core\Type\GenericClassType;
 use Phpactor\WorseReflection\Core\Util\NodeUtil;
@@ -49,5 +54,33 @@ class GenericHelper
         }
 
         return $type;
+    }
+
+    /**
+     * @return Type[]
+     */
+    public static function arguments(NodeContextResolver $resolver, Frame $frame, ?ArgumentExpressionList $argumentExpressionList): array
+    {
+        if (null === $argumentExpressionList) {
+            return [];
+        }
+
+        $arguments = [];
+        foreach ($argumentExpressionList->getElements() as $argument) {
+            if (!$argument instanceof ArgumentExpression) {
+                continue;
+            }
+
+            $type = $resolver->resolveNode($frame, $argument)->type();
+
+            if ($type instanceof ArrayType) {
+                $type = TypeUtil::generalize($type->valueType);
+            }
+
+            $arguments[] = $type;
+        }
+
+
+        return $arguments;
     }
 }

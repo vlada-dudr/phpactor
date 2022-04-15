@@ -5,9 +5,9 @@
  */
 class Foobar {
     /**
-     * @param TValue $foo
+     * @param TValue[] $foo
      */
-    public function __construct(object $foo)
+    public function __construct(array $foo)
     {
     }
 
@@ -15,8 +15,8 @@ class Foobar {
      * @return TValue
      */
     public function foo() {
-   } 
+    }
 }
 
-$foo = new Foobar(new Bar());
+$foo = new Foobar([new Bar()]);
 wrAssertType('Bar', $foo->foo());
