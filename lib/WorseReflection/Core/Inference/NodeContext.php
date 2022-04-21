@@ -2,7 +2,6 @@
 
 namespace Phpactor\WorseReflection\Core\Inference;
 
-use Phpactor\WorseReflection\Core\Name;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\TypeFactory;
 use Phpactor\WorseReflection\Core\Type\MissingType;
