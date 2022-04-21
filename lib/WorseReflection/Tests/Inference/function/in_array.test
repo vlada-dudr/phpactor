@@ -26,3 +26,6 @@ class Foo {
         }
     }
 }
+
+wrAssertSymbolName('in_array', in_array('asd', []));
+wrAssertEval(in_array('foo', ['foo']));

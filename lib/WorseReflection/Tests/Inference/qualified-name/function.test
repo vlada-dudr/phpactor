@@ -1,0 +1,9 @@
+<?php
+
+function in_array(): array
+{
+}
+
+wrAssertType('bool', \in_array($file->getPathname(), $excludes, true));
+
+
