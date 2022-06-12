@@ -10,10 +10,12 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\Extension\LanguageServerBridge\Converter\PositionConverter;
 use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\Inference\FrameResolver;
+use Phpactor\WorseReflection\Core\Inference\FunctionArguments;
 use Phpactor\WorseReflection\Core\Inference\NodeContext;
 use Phpactor\WorseReflection\Core\Inference\Walker;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\TypeFactory;
+use Phpactor\WorseReflection\Core\Type\IntLiteralType;
 use Phpactor\WorseReflection\Core\Type\MissingType;
 use Phpactor\WorseReflection\Core\Type\StringLiteralType;
 use Phpactor\WorseReflection\TypeUtil;
@@ -49,6 +51,10 @@ class TestAssertWalker implements Walker
             $this->assertType($resolver, $frame, $node);
             return $frame;
         }
+        if ($name === 'wrAssertTypeAt') {
+            $this->assertTypeAt($resolver, $frame, $node);
+            return $frame;
+        }
         if ($name === 'wrReturnType') {
             $this->assertReturnType($resolver, $frame, $node);
             return $frame;
@@ -72,22 +78,35 @@ class TestAssertWalker implements Walker
 
     private function assertType(FrameResolver $resolver, Frame $frame, Node $node): void
     {
-        $list = $node->argumentExpressionList->getElements();
-        $args = [];
-        $exprs = [];
-        foreach ($list as $expression) {
-            if (!$expression instanceof ArgumentExpression) {
-                continue;
-            }
+        $args = FunctionArguments::fromList($resolver->resolver(), $frame, $node->argumentExpressionList);
+        // get string to compare against
+        $expectedType = $args->at(0)->type();
+        $actualType = $args->at(1)->type();
+        $this->assertTypeIs($node, $actualType, $expectedType, $args->atOrNull(2));
+    }
 
-            $args[] = $resolver->resolveNode($frame, $expression);
-            $exprs[] = $expression;
+    private function assertTypeAt(FrameResolver $resolver, Frame $frame, CallExpression $node): void
+    {
+        $args = FunctionArguments::fromList($resolver->resolver(), $frame, $node->argumentExpressionList);
+        $expectedType = $args->at(0)->type();
+        $offset = $args->at(1)->type();
+        if (!$offset instanceof IntLiteralType) {
+            throw new RuntimeException(sprintf(
+                'Expected int literal for offset but got "%s"',
+                $offset->__toString()
+            ));
+
         }
 
-        // get string to compare against
-        $expectedType = $args[0]->type();
-        $actualType = $args[1]->type();
-        $this->assertTypeIs($node, $actualType, $expectedType, $args[2]??null);
+        $context = $resolver->reflector()->reflectOffset($node->getFileContents(), $offset->value());
+
+        $this->assertTypeIs(
+            $node,
+            $context->symbolContext()->type(),
+            $expectedType,
+            $args->atOrNull(2)
+        );
+
     }
 
     private function assertEval(FrameResolver $resolver, Frame $frame, CallExpression $node): void

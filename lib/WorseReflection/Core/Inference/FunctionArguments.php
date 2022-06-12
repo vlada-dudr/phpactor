@@ -57,4 +57,13 @@ class FunctionArguments implements IteratorAggregate
             yield $this->resolver->resolveNode($this->frame, $argument);
         }
     }
+
+    public function atOrNull(int $index): ?NodeContext
+    {
+        if (!isset($this->arguments[$index])) {
+            return null;
+        }
+
+        return $this->resolver->resolveNode($this->frame, $this->arguments[$index]);
+    }
 }
