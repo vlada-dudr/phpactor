@@ -90,6 +90,7 @@ class TestAssertWalker implements Walker
         $args = FunctionArguments::fromList($resolver->resolver(), $frame, $node->argumentExpressionList);
         $expectedType = $args->at(0)->type();
         $offset = $args->at(1)->type();
+
         if (!$offset instanceof IntLiteralType) {
             throw new RuntimeException(sprintf(
                 'Expected int literal for offset but got "%s"',
@@ -98,7 +99,7 @@ class TestAssertWalker implements Walker
 
         }
 
-        $context = $resolver->reflector()->reflectOffset($node->getFileContents(), $offset->value());
+        $context = $resolver->withoutWalker(self::class)->reflector()->reflectOffset($node->getFileContents(), $offset->value());
 
         $this->assertTypeIs(
             $node,

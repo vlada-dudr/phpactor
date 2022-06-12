@@ -1,0 +1,12 @@
+<?php
+
+namespace Test;
+
+class Foo {
+}
+
+$foo = new Foo();
+
+$foo = $foo->notExisting($bar);
+
+wrAssertTypeAt('Test\Foo', 68);

@@ -51,8 +51,8 @@ class Frame
     public function __toString(): string
     {
         return implode("\n", array_map(function (Assignments $assignments, string $type) {
-            return $type ."\n:" . $assignments->__toString();
-        }, [$this->properties, $this->locals], ['properties', 'locals']));
+            return $type ."\n" . $assignments->__toString();
+        }, [$this->properties, $this->locals], ['properties:', 'locals:']));
     }
 
     public function new(string $name): Frame

@@ -13,6 +13,6 @@ class Foo {
 $bar = new Bar();
 $foo = new Foo();
 
-$foo = $foo->notExisting($bar);
+$foo = $foo->withFoo($bar);
 
-wrAssertTypeAt('Test\Foo', 153);
+wrAssertType('Test\Bar', $foo);
